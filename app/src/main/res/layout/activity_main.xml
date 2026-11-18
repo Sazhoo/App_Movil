@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F6F9"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sistema de Soporte CESDE"
+            android:textColor="#1E293B"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp"/>
+
+        <!-- ================= PANEL 1: MENÚ DE SELECCIÓN DE ROL ================= -->
+        <LinearLayout
+            android:id="@+id/panelMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Cómo deseas ingresar?"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#0F172A"
+                android:paddingBottom="24dp"/>
+
+            <Button
+                android:id="@+id/btnIrAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingresar como Administrador"
+                android:backgroundTint="#0284C7"
+                android:textColor="#FFFFFF"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/btnIrUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entrar como Usuario (Crear / Ver Caso)"
+                android:backgroundTint="#0D9488"
+                android:textColor="#FFFFFF"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <!-- ================= PANEL 2: LOGIN DE ADMINISTRADOR ================= -->
+        <LinearLayout
+            android:id="@+id/panelAdminLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Login Administrador"
+                        android:textColor="#0284C7"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="12dp"/>
+
+                    <EditText
+                        android:id="@+id/txtAdminUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre de Administrador"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"/>
+
+                    <EditText
+                        android:id="@+id/txtAdminPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contraseña"
+                        android:inputType="textPassword"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <Button
+                            android:id="@+id/btnLoginAdmin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Entrar"
+                            android:backgroundTint="#0284C7"
+                            android:textColor="#FFFFFF"/>
+
+                        <Button
+                            android:id="@+id/btnVolverMenu1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Volver"
+                            android:backgroundTint="#64748B"
+                            android:textColor="#FFFFFF"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- ================= PANEL 3: DASHBOARD DEL ADMINISTRADOR ================= -->
+        <LinearLayout
+            android:id="@+id/panelAdminDashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/lblSaludoAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bienvenido"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#0F172A"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tus casos asignados:"
+                android:textColor="#334155"
+                android:paddingBottom="4dp"/>
+
+            <ListView
+                android:id="@+id/listViewAdminTickets"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="#FFFFFF"
+                android:divider="#CBD5E1"
+                android:dividerHeight="1dp"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/btnCerrarSesionAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar Sesión"
+                android:backgroundTint="#EF4444"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- ================= PANEL 4: FORMULARIO Y CONSULTA DE USUARIO ================= -->
+        <LinearLayout
+            android:id="@+id/panelUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Card Registrar Caso -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Registrar Nuevo Caso"
+                        android:textColor="#0D9488"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtNombreUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Tu Nombre (Ej: Juan Zamora)"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtDocumento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Documento de Identidad (Máx. 10 dígitos)"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtPlacaEquipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Placa del Equipo (Máx. 13 caracteres)"
+                        android:inputType="text"
+                        android:maxLength="13"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtDescripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="¿Qué pasó con el equipo? (Hechos)"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de Solicitud:"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgTipoSolicitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp">
+
+                        <RadioButton
+                            android:id="@+id/rbIncidente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Incidente (INC)"/>
+
+                        <RadioButton
+                            android:id="@+id/rbOrdenTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Orden de Trabajo (WO)"
+                            android:layout_marginStart="16dp"/>
+                    </RadioGroup>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ubicación / Sede:"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp">
+
+                        <RadioButton
+                            android:id="@+id/rbMedellin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Cesde Sede Medellín (Salud)"/>
+
+                        <RadioButton
+                            android:id="@+id/rbBogota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cesde Sede Bogotá (Bienestar y Cuidado)"
+                            android:layout_marginTop="4dp"/>
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <Button
+                            android:id="@+id/btnRegistrar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Registrar"
+                            android:backgroundTint="#0D9488"
+                            android:textColor="#FFFFFF"/>
+
+                        <Button
+                            android:id="@+id/btnLimpiar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Limpiar"
+                            android:backgroundTint="#64748B"
+                            android:textColor="#FFFFFF"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card Consultar Tickets de Usuario -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Consultar Mis Tickets"
+                        android:textColor="#0D9488"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtDocConsulta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ingresa tu documento (Máx. 10 dígitos)"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="10dp"/>
+
+                    <Button
+                        android:id="@+id/btnConsultarUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buscar Mis Tickets"
+                        android:backgroundTint="#0D9488"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="8dp"/>
+
+                    <ListView
+                        android:id="@+id/listViewUserTickets"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:background="#F8FAFC"
+                        android:divider="#CBD5E1"
+                        android:dividerHeight="1dp"
+                        android:layout_marginTop="12dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnVolverMenu2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Volver al Menú Principal"
+                android:backgroundTint="#64748B"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
