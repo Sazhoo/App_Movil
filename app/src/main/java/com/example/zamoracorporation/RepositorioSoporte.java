@@ -19,8 +19,6 @@ public class RepositorioSoporte {
         return listaTickets;
     }
 
-    // Asignación automática: Compara cuántos casos tiene Juan Zamora vs Daniela Rojas
-    // y asigna obligatoriamente al que tenga menos (balanceo de carga equitativo)
     public String asignarAnalistaAutomatico() {
         int countJuan = 0;
         int countDaniela = 0;
@@ -40,7 +38,6 @@ public class RepositorioSoporte {
         }
     }
 
-    // Filtrar tickets para un administrador específico
     public ArrayList<TicketSoporte> obtenerTicketsPorAnalista(String nombreAnalista) {
         ArrayList<TicketSoporte> filtrados = new ArrayList<>();
         for (TicketSoporte t : listaTickets) {
@@ -51,7 +48,6 @@ public class RepositorioSoporte {
         return filtrados;
     }
 
-    // Filtrar tickets para un usuario por su documento
     public ArrayList<TicketSoporte> obtenerTicketsPorUsuario(String documento) {
         ArrayList<TicketSoporte> filtrados = new ArrayList<>();
         for (TicketSoporte t : listaTickets) {

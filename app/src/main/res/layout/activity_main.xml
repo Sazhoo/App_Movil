@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Sistema de Soporte CESDE"
+            android:text="Sistema de Soporte Técnico"
             android:textColor="#1E293B"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -159,14 +159,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tus casos asignados:"
+                android:text="Tus casos asignados (Toca uno para ver detalle):"
                 android:textColor="#334155"
                 android:paddingBottom="4dp"/>
 
             <ListView
                 android:id="@+id/listViewAdminTickets"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="240dp"
                 android:background="#FFFFFF"
                 android:divider="#CBD5E1"
                 android:dividerHeight="1dp"
@@ -213,12 +213,57 @@
                         android:textStyle="bold"
                         android:paddingBottom="8dp"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de Solicitud:"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgTipoSolicitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp">
+
+                        <RadioButton
+                            android:id="@+id/rbIncidente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Incidente (INC)"/>
+
+                        <RadioButton
+                            android:id="@+id/rbOrdenTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Orden de Trabajo (WO)"/>
+
+                        <RadioButton
+                            android:id="@+id/rbGarantia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Garantía (Falla de fábrica / sin golpe)"/>
+                    </RadioGroup>
+
+                    <!-- CAMPOS COMUNES PARA TODOS LOS FORMULARIOS -->
                     <EditText
                         android:id="@+id/txtNombreUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tu Nombre (Ej: Juan Zamora)"
+                        android:hint="Nombre de Usuario (Solo texto)"
                         android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <EditText
+                        android:id="@+id/txtCorreoCorporativo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Correo (@compensar.com o @consorciosalud.com)"
+                        android:inputType="textEmailAddress"
                         android:padding="10dp"
                         android:layout_marginTop="8dp"/>
 
@@ -226,7 +271,7 @@
                         android:id="@+id/txtDocumento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Documento de Identidad (Máx. 10 dígitos)"
+                        android:hint="ID Corporativo / Documento (Máx. 10 dígitos)"
                         android:inputType="number"
                         android:maxLength="10"
                         android:padding="10dp"
@@ -242,75 +287,69 @@
                         android:padding="10dp"
                         android:layout_marginTop="8dp"/>
 
+                    <!-- SECCIÓN DINÁMICA EXCLUSIVA PARA GARANTÍA -->
+                    <LinearLayout
+                        android:id="@+id/layoutCamposGarantia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#F1F5F9"
+                        android:padding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Datos del Equipo en Garantía:"
+                            android:textColor="#0284C7"
+                            android:textStyle="bold"
+                            android:paddingBottom="6dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Marca del Equipo:"
+                            android:textColor="#334155"
+                            android:textSize="13sp"/>
+
+                        <Spinner
+                            android:id="@+id/spinnerMarca"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Formato del Equipo:"
+                            android:textColor="#334155"
+                            android:textSize="13sp"/>
+
+                        <Spinner
+                            android:id="@+id/spinnerTipoEquipo"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <EditText
+                            android:id="@+id/txtSerialEquipo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Serial del Equipo (S/N)"
+                            android:inputType="textCapCharacters"
+                            android:padding="10dp"/>
+                    </LinearLayout>
+
                     <EditText
                         android:id="@+id/txtDescripcion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="¿Qué pasó con el equipo? (Hechos)"
+                        android:hint="Descripción de los hechos / falla"
                         android:inputType="textMultiLine"
                         android:lines="3"
                         android:padding="10dp"
                         android:layout_marginTop="8dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tipo de Solicitud:"
-                        android:textColor="#334155"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <RadioGroup
-                        android:id="@+id/rgTipoSolicitud"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="4dp">
-
-                        <RadioButton
-                            android:id="@+id/rbIncidente"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="Incidente (INC)"/>
-
-                        <RadioButton
-                            android:id="@+id/rbOrdenTrabajo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Orden de Trabajo (WO)"
-                            android:layout_marginStart="16dp"/>
-                    </RadioGroup>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ubicación / Sede:"
-                        android:textColor="#334155"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <RadioGroup
-                        android:id="@+id/rgUbicacion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="4dp">
-
-                        <RadioButton
-                            android:id="@+id/rbMedellin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="Cesde Sede Medellín (Salud)"/>
-
-                        <RadioButton
-                            android:id="@+id/rbBogota"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cesde Sede Bogotá (Bienestar y Cuidado)"
-                            android:layout_marginTop="4dp"/>
-                    </RadioGroup>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -368,7 +407,7 @@
                         android:id="@+id/txtDocConsulta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Ingresa tu documento (Máx. 10 dígitos)"
+                        android:hint="Ingresa tu ID / Documento (Máx. 10 dígitos)"
                         android:inputType="number"
                         android:maxLength="10"
                         android:padding="10dp"/>
