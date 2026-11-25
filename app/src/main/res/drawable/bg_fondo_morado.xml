@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Imagen centrada sin estirarse -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/morada" />
+    </item>
+
+    <!-- Capa oscura semitransparente para dar profundidad -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#B3120B29" />
+        </shape>
+    </item>
+</layer-list>

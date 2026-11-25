@@ -16,6 +16,9 @@ public class RepositorioSoporte {
     }
 
     public ArrayList<TicketSoporte> getListaTickets() {
+        for (TicketSoporte t : listaTickets) {
+            t.verificarYActualizarVencimientoSla();
+        }
         return listaTickets;
     }
 
@@ -31,16 +34,13 @@ public class RepositorioSoporte {
             }
         }
 
-        if (countJuan <= countDaniela) {
-            return "Juan Zamora";
-        } else {
-            return "Daniela Rojas";
-        }
+        return (countJuan <= countDaniela) ? "Juan Zamora" : "Daniela Rojas";
     }
 
     public ArrayList<TicketSoporte> obtenerTicketsPorAnalista(String nombreAnalista) {
         ArrayList<TicketSoporte> filtrados = new ArrayList<>();
         for (TicketSoporte t : listaTickets) {
+            t.verificarYActualizarVencimientoSla();
             if (t.getAnalistaAsignado().equalsIgnoreCase(nombreAnalista)) {
                 filtrados.add(t);
             }
@@ -51,6 +51,7 @@ public class RepositorioSoporte {
     public ArrayList<TicketSoporte> obtenerTicketsPorUsuario(String documento) {
         ArrayList<TicketSoporte> filtrados = new ArrayList<>();
         for (TicketSoporte t : listaTickets) {
+            t.verificarYActualizarVencimientoSla();
             if (t.getDocumentoIdentidad().trim().equals(documento.trim())) {
                 filtrados.add(t);
             }

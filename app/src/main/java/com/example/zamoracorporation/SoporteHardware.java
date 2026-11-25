@@ -1,23 +1,22 @@
 package com.example.zamoracorporation;
 
 public class SoporteHardware extends TicketSoporte {
-    private double costoRepuestos;
-    private boolean requiereIntervencionSitio;
+    private String ubicacion;
 
-    public SoporteHardware(String codigoTicket, String nombreUsuario, String documentoIdentidad,
-                           String placaEquipo, String descripcionHechos, String ubicacion,
-                           double costoBase, String analistaAsignado, double costoRepuestos, boolean enSitio) {
-        super(codigoTicket, nombreUsuario, documentoIdentidad, placaEquipo, descripcionHechos, ubicacion, costoBase, analistaAsignado);
-        this.costoRepuestos = costoRepuestos;
-        this.requiereIntervencionSitio = enSitio;
+    public SoporteHardware(String codigoTicket, String titulo, String nombreUsuario, String correoCorporativo,
+                           String documentoIdentidad, String placaEquipo, String descripcionHechos,
+                           String ubicacion, double costoBase, String analistaAsignado) {
+        super(codigoTicket, titulo, nombreUsuario, correoCorporativo, documentoIdentidad,
+                placaEquipo, descripcionHechos, costoBase, analistaAsignado);
+        this.ubicacion = ubicacion;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
     }
 
     @Override
     public double calcularCostoTotal() {
-        double total = getCostoBase() + costoRepuestos;
-        if (requiereIntervencionSitio) {
-            total *= 1.10; // 10% recargo en sitio
-        }
-        return total;
+        return getCostoBase() * 1.10;
     }
 }
