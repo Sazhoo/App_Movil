@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="SpinnerPopupMorado" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:popupBackground">#1E0E38</item>
-        <item name="android:colorBackground">#1E0E38</item>
-        <item name="android:textColor">#F3E8FF</item>
-    </style>
-</resources>
+<?xml version="1.0" encoding="utf-8"?> <!-- Declaración XML estándar con codificación UTF-8 para recursos de Android -->
+<resources> <!-- Etiqueta raíz que agrupa estilos, colores, dimensiones y recursos de la app -->
+    <style name="SpinnerPopupMorado" parent="ThemeOverlay.AppCompat.Dark"> <!-- Define el estilo SpinnerPopupMorado heredando de un tema oscuro de AppCompat para buen contraste -->
+        <item name="android:popupBackground">#1E0E38</item> <!-- Establece el fondo morado oscuro (#1E0E38) para la ventana desplegable del Spinner -->
+        <item name="android:colorBackground">#1E0E38</item> <!-- Define el color base de fondo (#1E0E38) dentro del tema aplicado al popup -->
+        <item name="android:textColor">#F3E8FF</item> <!-- Aplica un color lila muy claro (#F3E8FF) al texto de las opciones dentro del desplegable -->
+    </style> <!-- Fin del estilo SpinnerPopupMorado -->
+</resources> <!-- Fin del archivo de recursos -->
