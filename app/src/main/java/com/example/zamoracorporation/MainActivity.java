@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_COUNTER_INC = "contador_inc";
     private static final String KEY_COUNTER_WO = "contador_wo";
 
-    // Máximo 10 dígitos numéricos tras "INC" (3) o "WO" (2) para mantenerse dentro de 13 caracteres
+    // Máximo 10 dígitos numéricos tras "INC" (3) o "WO" (2) para mantenerse dentro del límite de longitud
     private static final int LONGITUD_DIGITOS_INC = 10;
     private static final int LONGITUD_DIGITOS_WO = 10;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int COLOR_POPUP_MORADO = Color.parseColor("#1E0E38");
     private static final int COLOR_INPUT_MORADO = Color.parseColor("#24103D");
     private static final int COLOR_TEXTO_LILA = Color.parseColor("#E9D5FF");
+    private static final int COLOR_HINT_LILA = Color.parseColor("#C4B5FD");
 
     private static final int SLA_BAJA_MINUTOS = 30;
     private static final int SLA_REGULAR_MINUTOS = 15;
@@ -328,6 +330,35 @@ public class MainActivity extends AppCompatActivity {
         return "";
     }
 
+    private void asignarPropiedadStringSeguro(Object objeto, String valor, String... nombresMetodos) {
+        if (objeto == null || valor == null || nombresMetodos == null) return;
+
+        for (String nombre : nombresMetodos) {
+            if (nombre == null || nombre.isEmpty()) continue;
+            try {
+                Method m = objeto.getClass().getMethod(nombre, String.class);
+                m.invoke(objeto, valor);
+                return;
+            } catch (Exception ignored) { }
+        }
+
+        Class<?> clazz = objeto.getClass();
+        while (clazz != null) {
+            for (String nombre : nombresMetodos) {
+                String campoPosible = nombre.startsWith("set") && nombre.length() > 3
+                        ? Character.toLowerCase(nombre.charAt(3)) + nombre.substring(4)
+                        : nombre;
+                try {
+                    Field f = clazz.getDeclaredField(campoPosible);
+                    f.setAccessible(true);
+                    f.set(objeto, valor);
+                    return;
+                } catch (Exception ignored) { }
+            }
+            clazz = clazz.getSuperclass();
+        }
+    }
+
     private long obtenerFechaCreacionSeguro(TicketSoporte ticket) {
         if (ticket == null) return System.currentTimeMillis();
         String raw = obtenerPropiedadSeguro(ticket, "getFechaCreacionMillis", "getFechaCreacion", "getTimestampCreacion", "getHoraCreacionMillis");
@@ -424,6 +455,24 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private EditText crearEditTextMorado(String valorInicial) {
+        EditText edt = new EditText(this);
+        edt.setText(valorInicial != null ? valorInicial : "");
+        edt.setTextColor(Color.WHITE);
+        edt.setHintTextColor(COLOR_HINT_LILA);
+        edt.setBackgroundColor(COLOR_INPUT_MORADO);
+        edt.setTextSize(14f);
+        edt.setPadding(24, 18, 24, 18);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 6, 0, 0);
+        edt.setLayoutParams(params);
+        return edt;
     }
 
     private void mostrarPanel(LinearLayout panelActivo) {
@@ -788,7 +837,7 @@ public class MainActivity extends AppCompatActivity {
     private void registrarNuevoCaso() {
         String titulo = txtTituloCaso != null ? txtTituloCaso.getText().toString().trim() : "";
         String usuario = txtNombreUsuario != null ? txtNombreUsuario.getText().toString().trim() : "";
-        String correo = txtCorreoCorporativo != null ? txtCorreoCorporativo.getText().toString().trim().toLowerCase() : "";
+        String correo = txtCorreoCorporativo != null ? txtCorreoCorporativo.getText().toString().trim().toLowerCase(Locale.ROOT) : "";
         String documento = txtDocumento != null ? txtDocumento.getText().toString().trim() : "";
         String placa = txtPlacaEquipo != null ? txtPlacaEquipo.getText().toString().trim() : "";
         String descripcion = txtDescripcion != null ? txtDescripcion.getText().toString().trim() : "";
@@ -969,9 +1018,19 @@ public class MainActivity extends AppCompatActivity {
                 "👨‍💻 Analista: " + t.getAnalistaAsignado() + "\n" +
                 "📝 Descripción: " + t.getDescripcionHechos();
 
+        ScrollView scroll = new ScrollView(MainActivity.this);
+        scroll.setBackgroundColor(COLOR_FONDO_MORADO);
+
+        TextView tvInfo = new TextView(MainActivity.this);
+        tvInfo.setText(infoUsuario);
+        tvInfo.setTextColor(Color.WHITE);
+        tvInfo.setTextSize(15f);
+        tvInfo.setPadding(45, 28, 45, 20);
+        scroll.addView(tvInfo);
+
         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Estado de tu Caso")
-                .setMessage(infoUsuario)
+                .setView(scroll)
                 .setPositiveButton("Cerrar", null)
                 .create();
 
@@ -1079,14 +1138,93 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarDialogoEditarTicket(TicketSoporte t) {
+        ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(COLOR_FONDO_MORADO);
+
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(COLOR_FONDO_MORADO);
-        layout.setPadding(45, 24, 45, 16);
+        layout.setPadding(45, 24, 45, 20);
+        scroll.addView(layout);
+
+        TextView lblTitulo = new TextView(this);
+        lblTitulo.setText("Título del caso");
+        lblTitulo.setTextColor(Color.WHITE);
+        lblTitulo.setTypeface(null, Typeface.BOLD);
+        layout.addView(lblTitulo);
+
+        EditText edtTitulo = crearEditTextMorado(t.getTitulo());
+        layout.addView(edtTitulo);
+
+        TextView lblUsuario = new TextView(this);
+        lblUsuario.setText("Nombre de usuario");
+        lblUsuario.setTextColor(Color.WHITE);
+        lblUsuario.setTypeface(null, Typeface.BOLD);
+        lblUsuario.setPadding(0, 12, 0, 0);
+        layout.addView(lblUsuario);
+
+        EditText edtUsuario = crearEditTextMorado(t.getNombreUsuario());
+        layout.addView(edtUsuario);
+
+        TextView lblCorreo = new TextView(this);
+        lblCorreo.setText("Correo corporativo");
+        lblCorreo.setTextColor(Color.WHITE);
+        lblCorreo.setTypeface(null, Typeface.BOLD);
+        lblCorreo.setPadding(0, 12, 0, 0);
+        layout.addView(lblCorreo);
+
+        EditText edtCorreo = crearEditTextMorado(t.getCorreoCorporativo());
+        layout.addView(edtCorreo);
+
+        TextView lblDocumento = new TextView(this);
+        lblDocumento.setText("Documento / ID");
+        lblDocumento.setTextColor(Color.WHITE);
+        lblDocumento.setTypeface(null, Typeface.BOLD);
+        lblDocumento.setPadding(0, 12, 0, 0);
+        layout.addView(lblDocumento);
+
+        EditText edtDocumento = crearEditTextMorado(t.getDocumentoIdentidad());
+        layout.addView(edtDocumento);
+
+        TextView lblPlaca = new TextView(this);
+        lblPlaca.setText("Placa del equipo");
+        lblPlaca.setTextColor(Color.WHITE);
+        lblPlaca.setTypeface(null, Typeface.BOLD);
+        lblPlaca.setPadding(0, 12, 0, 0);
+        layout.addView(lblPlaca);
+
+        EditText edtPlaca = crearEditTextMorado(t.getPlacaEquipo());
+        layout.addView(edtPlaca);
+
+        TextView lblDescripcion = new TextView(this);
+        lblDescripcion.setText("Descripción de los hechos");
+        lblDescripcion.setTextColor(Color.WHITE);
+        lblDescripcion.setTypeface(null, Typeface.BOLD);
+        lblDescripcion.setPadding(0, 12, 0, 0);
+        layout.addView(lblDescripcion);
+
+        EditText edtDescripcion = crearEditTextMorado(t.getDescripcionHechos());
+        layout.addView(edtDescripcion);
+
+        EditText edtSerialRef = null;
+        if (t instanceof TicketGarantia) {
+            TextView lblSerial = new TextView(this);
+            lblSerial.setText("Serial del equipo");
+            lblSerial.setTextColor(Color.WHITE);
+            lblSerial.setTypeface(null, Typeface.BOLD);
+            lblSerial.setPadding(0, 12, 0, 0);
+            layout.addView(lblSerial);
+
+            String serialActual = obtenerPropiedadSeguro(t, "getSerialEquipo", "getSerial", "getNumeroSerie");
+            edtSerialRef = crearEditTextMorado(serialActual);
+            layout.addView(edtSerialRef);
+        }
 
         TextView lblEstado = new TextView(this);
         lblEstado.setText("Estado");
         lblEstado.setTextColor(Color.WHITE);
+        lblEstado.setTypeface(null, Typeface.BOLD);
+        lblEstado.setPadding(0, 12, 0, 0);
         layout.addView(lblEstado);
 
         Spinner spEstado = new Spinner(this);
@@ -1103,22 +1241,58 @@ public class MainActivity extends AppCompatActivity {
         TextView lblMotivo = new TextView(this);
         lblMotivo.setText("Motivo de estado");
         lblMotivo.setTextColor(Color.WHITE);
+        lblMotivo.setTypeface(null, Typeface.BOLD);
         lblMotivo.setPadding(0, 12, 0, 0);
         layout.addView(lblMotivo);
 
-        EditText edtMotivo = new EditText(this);
-        edtMotivo.setText(t.getMotivoEstado());
-        edtMotivo.setTextColor(Color.WHITE);
-        edtMotivo.setBackgroundColor(COLOR_INPUT_MORADO);
+        EditText edtMotivo = crearEditTextMorado(t.getMotivoEstado());
         layout.addView(edtMotivo);
+
+        final EditText edtSerialFinal = edtSerialRef;
 
         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Editar " + t.getCodigoTicket())
-                .setView(layout)
+                .setView(scroll)
                 .setPositiveButton("Guardar", (d, w) -> {
                     try {
-                        t.setEstado(spEstado.getSelectedItem().toString());
-                        t.setMotivoEstado(edtMotivo.getText().toString().trim());
+                        String nuevoTitulo = edtTitulo.getText().toString().trim();
+                        String nuevoUsuario = edtUsuario.getText().toString().trim();
+                        String nuevoCorreo = edtCorreo.getText().toString().trim().toLowerCase(Locale.ROOT);
+                        String nuevoDocumento = edtDocumento.getText().toString().trim();
+                        String nuevaPlaca = edtPlaca.getText().toString().trim();
+                        String nuevaDescripcion = edtDescripcion.getText().toString().trim();
+                        String nuevoEstado = spEstado.getSelectedItem().toString();
+                        String nuevoMotivo = edtMotivo.getText().toString().trim();
+
+                        if (!nuevoCorreo.matches("^[a-zA-Z0-9._-]+@(compensar\\.com|consorciosalud\\.com)$")) {
+                            Toast.makeText(this, "⚠️ Correo inválido. Debe terminar en @compensar.com o @consorciosalud.com", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        t.setTitulo(nuevoTitulo);
+                        t.setNombreUsuario(nuevoUsuario);
+                        t.setCorreoCorporativo(nuevoCorreo);
+                        t.setDocumentoIdentidad(nuevoDocumento);
+                        t.setPlacaEquipo(nuevaPlaca);
+                        t.setDescripcionHechos(nuevaDescripcion);
+
+                        if (t instanceof TicketGarantia && edtSerialFinal != null) {
+                            asignarPropiedadStringSeguro(t, edtSerialFinal.getText().toString().trim(),
+                                    "setSerialEquipo", "setSerial", "setNumeroSerie");
+                        }
+
+                        t.setEstado(nuevoEstado);
+                        t.setMotivoEstado(nuevoMotivo);
+
+                        String prioridadRecalculada = calcularPrioridadAutomatica(
+                                nuevoTitulo,
+                                nuevaDescripcion,
+                                t instanceof TicketGarantia,
+                                t instanceof TicketOrdenTrabajo
+                        );
+                        t.setPrioridad(prioridadRecalculada);
+                        asignarSlaSegunPrioridad(t, prioridadRecalculada);
+
                         guardarTicketsPersistentes();
                         if (!adminActual.isEmpty()) cargarDashboardAdmin(adminActual);
                         Toast.makeText(this, "✅ Ticket actualizado", Toast.LENGTH_SHORT).show();
